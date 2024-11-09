@@ -1,19 +1,78 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { SheetGrid, SheetGridCol, SheetGridRow } from '../types';
+import { darken, lighten, styled, Theme } from '@mui/material';
 
 type Props = {
   data: SheetGrid
 };
 
-export default function SignatureGrid({data} : Props) {
-  const transformRows = (rows : SheetGridRow[] ) => {
+const getBackgroundColor = (color: string, theme: Theme, coefficient: number) => ({
+  backgroundColor: darken(color, coefficient),
+  ...theme.applyStyles('light', {
+    backgroundColor: lighten(color, coefficient),
+  }),
+});
+
+const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  '& .super-app-theme--Open': {
+    ...getBackgroundColor(theme.palette.info.main, theme, 0.7),
+    '&:hover': {
+      ...getBackgroundColor(theme.palette.info.main, theme, 0.6),
+    },
+    '&.Mui-selected': {
+      ...getBackgroundColor(theme.palette.info.main, theme, 0.5),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.info.main, theme, 0.4),
+      },
+    },
+  },
+  '& .super-app-theme--Filled': {
+    ...getBackgroundColor(theme.palette.success.main, theme, 0.7),
+    '&:hover': {
+      ...getBackgroundColor(theme.palette.success.main, theme, 0.6),
+    },
+    '&.Mui-selected': {
+      ...getBackgroundColor(theme.palette.success.main, theme, 0.5),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.success.main, theme, 0.4),
+      },
+    },
+  },
+  '& .super-app-theme--PartiallyFilled': {
+    ...getBackgroundColor(theme.palette.warning.main, theme, 0.7),
+    '&:hover': {
+      ...getBackgroundColor(theme.palette.warning.main, theme, 0.6),
+    },
+    '&.Mui-selected': {
+      ...getBackgroundColor(theme.palette.warning.main, theme, 0.5),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.warning.main, theme, 0.4),
+      },
+    },
+  },
+  '& .super-app-theme--Rejected': {
+    ...getBackgroundColor(theme.palette.error.main, theme, 0.7),
+    '&:hover': {
+      ...getBackgroundColor(theme.palette.error.main, theme, 0.6),
+    },
+    '&.Mui-selected': {
+      ...getBackgroundColor(theme.palette.error.main, theme, 0.5),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.error.main, theme, 0.4),
+      },
+    },
+  },
+}));
+
+export default function SignatureGrid({ data }: Props) {
+  const transformRows = (rows: SheetGridRow[]) => {
     return rows.map(transformRow)
   }
 
   // console.log(data.rows.map(r => r.c[0].v))
 
-  const transformRow = (row : SheetGridRow) => {
+  const transformRow = (row: SheetGridRow) => {
     return {
       ...row,
       id: `${row.c[0].v}_${row.c[1].v}_${row.c[2].v}`,
@@ -24,7 +83,7 @@ export default function SignatureGrid({data} : Props) {
     }
   }
 
-  const transformCol = (col : SheetGridCol) : GridColDef => {
+  const transformCol = (col: SheetGridCol): GridColDef => {
     return {
       field: col.label,
       headerName: col.label,
@@ -34,19 +93,21 @@ export default function SignatureGrid({data} : Props) {
       minWidth: 80,
     }
   }
-  
-  const transformCols = (cols : SheetGridCol[]) : GridColDef[] => {
+
+  const transformCols = (cols: SheetGridCol[]): GridColDef[] => {
     return cols.map(transformCol);
   }
 
   return (
-    <DataGrid
+    <StyledDataGrid
       autoHeight
-      checkboxSelection
       rows={transformRows(data.rows)}
       columns={transformCols(data.cols)}
-      getRowClassName={(params) =>
-        params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
+      getRowClassName={(params) => {
+        console.log(params.row.Assinou)
+        const signed = + params.row.Assinou ? 'super-app-theme--Filled' : 'super-app-theme--Rejected'
+        return  signed;
+      }
       }
       initialState={{
         pagination: { paginationModel: { pageSize: 20 } },
