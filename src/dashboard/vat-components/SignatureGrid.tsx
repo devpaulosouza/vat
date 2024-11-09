@@ -1,14 +1,50 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import { columns, rows } from '../internals/data/gridData';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { SheetGrid, SheetGridCol, SheetGridRow } from '../types';
 
-export default function CustomizedDataGrid() {
+type Props = {
+  data: SheetGrid
+};
+
+export default function SignatureGrid({data} : Props) {
+  const transformRows = (rows : SheetGridRow[] ) => {
+    return rows.map(transformRow)
+  }
+
+  // console.log(data.rows.map(r => r.c[0].v))
+
+  const transformRow = (row : SheetGridRow) => {
+    return {
+      ...row,
+      id: `${row.c[0].v}_${row.c[1].v}_${row.c[2].v}`,
+      Nome: row.c[0].v,
+      Partido: row.c[1].v,
+      Estado: row.c[2].v,
+      Assinou: row.c[3].v
+    }
+  }
+
+  const transformCol = (col : SheetGridCol) : GridColDef => {
+    return {
+      field: col.label,
+      headerName: col.label,
+      headerAlign: 'right',
+      align: 'right',
+      flex: 1,
+      minWidth: 80,
+    }
+  }
+  
+  const transformCols = (cols : SheetGridCol[]) : GridColDef[] => {
+    return cols.map(transformCol);
+  }
+
   return (
     <DataGrid
       autoHeight
       checkboxSelection
-      rows={rows}
-      columns={columns}
+      rows={transformRows(data.rows)}
+      columns={transformCols(data.cols)}
       getRowClassName={(params) =>
         params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
       }
