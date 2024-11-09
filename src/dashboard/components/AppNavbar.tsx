@@ -63,9 +63,9 @@ export default function AppNavbar() {
             spacing={1}
             sx={{ justifyContent: 'center', mr: 'auto' }}
           >
-            <CustomIcon />
+            {/* <CustomIcon /> */}
             <Typography variant="h4" component="h1" sx={{ color: 'text.primary' }}>
-              Dashboard
+              Fim da Escala 6x1
             </Typography>
           </Stack>
           <ColorModeIconDropdown data-screenshot="" />

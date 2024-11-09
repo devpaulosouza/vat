@@ -7,8 +7,12 @@ import { StatCardProps } from './StatCard';
 import SignatureGrid from '../vat-components/SignatureGrid';
 import { GoogleSheetsResponse, SheetGrid } from '../types';
 import debounce from 'lodash.debounce';
+import { alpha, Stack } from '@mui/material';
+import Header from './Header';
+import SideMenu from './SideMenu';
+import AppNavbar from './AppNavbar';
 
-const EMPTY = {rows: [], cols:[]};
+const EMPTY = { rows: [], cols: [] };
 
 // export const UseDebounce = (value: any, delay: number) => {
 //   const [debouncedValue, setDebouncedValue] = useState();
@@ -59,9 +63,31 @@ export default function MainGrid() {
   }, []);
 
   return (
-    <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
-      {/* cards */}
-      {/* <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
+    <Box sx={{ display: 'flex' }}>
+      <SideMenu />
+      <AppNavbar />
+      <Box
+        component="main"
+        sx={(theme) => ({
+          flexGrow: 1,
+          backgroundColor: theme.vars
+            ? `rgba(${theme.vars.palette.background.defaultChannel} / 1)`
+            : alpha(theme.palette.background.default, 1),
+          overflow: 'auto',
+        })}
+      >
+        <Stack
+          spacing={2}
+          sx={{
+            alignItems: 'center',
+            mx: 3,
+            pb: 5,
+            mt: { xs: 8, md: 0 },
+          }}
+        >
+          <Header /><Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
+            {/* cards */}
+            {/* <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         Overview
       </Typography>
       <Grid
@@ -85,21 +111,33 @@ export default function MainGrid() {
           <PageViewsBarChart />
         </Grid>
       </Grid> */}
-      <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
-        Details
-      </Typography>
-      <Grid container spacing={2} columns={12}>
-        <Grid size={{ xs: 12, lg: 9 }}>
-          <SignatureGrid data={data} />
-        </Grid>
-        {/* <Grid size={{ xs: 12, lg: 3 }}>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <Typography component="p" sx={{ mb: 2, mr: 4 }}>
+                Assinaturas: {data.rows.map(r => r.c[3].v).reduce((p, c) => (c ? 1 : 0) + p, 0)}
+              </Typography>
+              <Typography component="p" sx={{ mb: 2, mr: 4 }}>
+                Abstenções: {data.rows.map(r => r.c[3].v).reduce((p, c) => (c ? 0 : 1) + p, 0)}
+              </Typography>
+              <Typography component="p" sx={{ mb: 2 }}>
+                Total: {data.rows.length}
+              </Typography>
+            </div>
+            <Grid container spacing={2} columns={12}>
+              <Grid size={{ xs: 12, lg: 9 }}>
+                <SignatureGrid data={data} />
+              </Grid>
+              {/* <Grid size={{ xs: 12, lg: 3 }}>
           <Stack gap={2} direction={{ xs: 'column', sm: 'row', lg: 'column' }}>
             <CustomizedTreeView />
             <ChartUserByCountry />
           </Stack>
         </Grid> */}
-      </Grid>
-      <Copyright sx={{ my: 4 }} />
+            </Grid>
+            <Copyright sx={{ my: 4 }} />
+          </Box>
+        </Stack>
+      </Box>
     </Box>
+
   );
 }

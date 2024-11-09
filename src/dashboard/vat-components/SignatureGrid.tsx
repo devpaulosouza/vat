@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSingleSelectColDef } from '@mui/x-data-grid';
 import { SheetGrid, SheetGridCol, SheetGridRow } from '../types';
 import { darken, lighten, styled, Theme } from '@mui/material';
 
@@ -79,7 +79,8 @@ export default function SignatureGrid({ data }: Props) {
       Nome: row.c[0].v,
       Partido: row.c[1].v,
       Estado: row.c[2].v,
-      Assinou: row.c[3].v
+      Assinou: row.c[3].v ? 'Sim' : 'Não',
+      signed: row.c[3].v
     }
   }
 
@@ -104,8 +105,7 @@ export default function SignatureGrid({ data }: Props) {
       rows={transformRows(data.rows)}
       columns={transformCols(data.cols)}
       getRowClassName={(params) => {
-        console.log(params.row.Assinou)
-        const signed = + params.row.Assinou ? 'super-app-theme--Filled' : 'super-app-theme--Rejected'
+        const signed = + params.row.signed ? 'super-app-theme--Filled' : 'super-app-theme--Rejected'
         return  signed;
       }
       }

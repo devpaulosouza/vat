@@ -35,7 +35,7 @@ export default function SideMenu() {
         },
       }}
     >
-      <Box
+      {/* <Box
         sx={{
           display: 'flex',
           mt: 'calc(var(--template-frame-height, 0px) + 4px)',
@@ -43,11 +43,11 @@ export default function SideMenu() {
         }}
       >
         <SelectContent />
-      </Box>
+      </Box> */}
       <Divider />
       <MenuContent />
-      <CardAlert />
-      <Stack
+      {/* <CardAlert /> */}
+      {/* <Stack
         direction="row"
         sx={{
           p: 2,
@@ -72,7 +72,7 @@ export default function SideMenu() {
           </Typography>
         </Box>
         <OptionsMenu />
-      </Stack>
+      </Stack> */}
     </Drawer>
   );
 }
