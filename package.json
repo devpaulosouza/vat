@@ -37,6 +37,9 @@
     "preinstall": "npx npm-force-resolutions",     
     "heroku-postbuild": "npm --legacy-peer-deps"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
