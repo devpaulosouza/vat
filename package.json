@@ -45,9 +45,6 @@
       "react-app/jest"
     ]
   },
-  "overrides": {
-    "typescript": "typescript^5.6.3"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
