@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, GridColDef, GridSingleSelectColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSingleSelectColDef, GridToolbar } from '@mui/x-data-grid';
 import { SheetGrid, SheetGridCol, SheetGridRow } from '../types';
 import { darken, lighten, styled, Theme } from '@mui/material';
 
@@ -99,11 +99,23 @@ export default function SignatureGrid({ data }: Props) {
     return cols.map(transformCol);
   }
 
+const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado'];
+  // Otherwise filter will be applied on fields such as the hidden column id
+  const columns = React.useMemo(
+    () => data.cols.filter((column) => VISIBLE_FIELDS.includes(column.label)),
+    [data.cols],
+  );
+
+
   return (
     <StyledDataGrid
       autoHeight
       rows={transformRows(data.rows)}
       columns={transformCols(data.cols)}
+      disableColumnFilter
+      disableColumnSelector
+      disableDensitySelector
+      slots={{ toolbar: GridToolbar }}
       getRowClassName={(params) => {
         const signed = + params.row.signed ? 'super-app-theme--Filled' : 'super-app-theme--Rejected'
         return  signed;
@@ -121,6 +133,9 @@ export default function SignatureGrid({ data }: Props) {
         includeHeaders: true,                  // Columns sized to fit all header content
       }}
       slotProps={{
+        toolbar: {
+          showQuickFilter: true,
+        },
         filterPanel: {
           filterFormProps: {
             logicOperatorInputProps: {
