@@ -89,9 +89,9 @@ export default function SignatureGrid({ data }: Props) {
       field: col.label,
       headerName: col.label,
       headerAlign: 'right',
-      align: 'right',
-      flex: 1,
-      minWidth: 80,
+      align: 'left',
+      flex: col.label === 'Nome' ? 5 : 1,
+      minWidth: col.label === 'Nome' ? 160 : 80,
     }
   }
 
@@ -115,6 +115,11 @@ export default function SignatureGrid({ data }: Props) {
       pageSizeOptions={[10, 20, 50]}
       disableColumnResize
       density="compact"
+      autosizeOnMount
+      autosizeOptions={{
+        includeOutliers: true,                 // Columns sized to fit all cell content
+        includeHeaders: true,                  // Columns sized to fit all header content
+      }}
       slotProps={{
         filterPanel: {
           filterFormProps: {
