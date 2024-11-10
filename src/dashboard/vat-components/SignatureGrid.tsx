@@ -2,6 +2,7 @@ import * as React from 'react';
 import { DataGrid, GridColDef, GridSingleSelectColDef, GridToolbar } from '@mui/x-data-grid';
 import { SheetGrid, SheetGridCol, SheetGridRow } from '../types';
 import { darken, lighten, styled, Theme } from '@mui/material';
+import { ptBR } from '@mui/x-data-grid/locales';
 
 type Props = {
   data: SheetGrid
@@ -112,9 +113,6 @@ const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado'];
       autoHeight
       rows={transformRows(data.rows)}
       columns={transformCols(data.cols)}
-      disableColumnFilter
-      disableColumnSelector
-      disableDensitySelector
       slots={{ toolbar: GridToolbar }}
       getRowClassName={(params) => {
         const signed = + params.row.signed ? 'super-app-theme--Filled' : 'super-app-theme--Rejected'
@@ -125,13 +123,14 @@ const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado'];
         pagination: { paginationModel: { pageSize: 20 } },
       }}
       pageSizeOptions={[10, 20, 50]}
-      disableColumnResize
-      density="compact"
       autosizeOnMount
       autosizeOptions={{
         includeOutliers: true,                 // Columns sized to fit all cell content
         includeHeaders: true,                  // Columns sized to fit all header content
       }}
+      disableDensitySelector
+      density='compact'
+      localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
       slotProps={{
         toolbar: {
           showQuickFilter: true,
