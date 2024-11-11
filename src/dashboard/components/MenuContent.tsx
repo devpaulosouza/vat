@@ -17,11 +17,12 @@ import {
   Link as RouterLink,
   LinkProps as RouterLinkProps,
   MemoryRouter,
+  useLocation,
 } from 'react-router-dom';
 
 const mainListItems = [
-  { text: 'Home', icon: <HomeRoundedIcon />, route: '/' },
-  // { text: 'Analytics', icon: <AnalyticsRoundedIcon />, route: 'analytics' },
+  { text: 'Lista', icon: <HomeRoundedIcon />, route: '/' },
+  { text: 'Gráficos por partido', icon: <AnalyticsRoundedIcon />, route: '/party-analytics' },
   // { text: 'Clients', icon: <PeopleRoundedIcon /> },
   // { text: 'Tasks', icon: <AssignmentRoundedIcon /> },
 ];
@@ -33,13 +34,16 @@ const secondaryListItems = [
 ];
 
 export default function MenuContent() {
+
+  const location = useLocation();
+
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       <List dense>
         {mainListItems.map((item, index) => (
           <Link component={RouterLink} style={{width: '100%'}} to={item.route}>
             <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton selected={index === 0}>
+              <ListItemButton selected={location.pathname === item.route}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.text} />
               </ListItemButton>

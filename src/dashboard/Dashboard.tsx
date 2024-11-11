@@ -23,6 +23,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import AnalyticsGrid from './components/AnalyticsGrid';
 
 const xThemeComponents = {
   ...chartsCustomizations,
@@ -37,8 +38,8 @@ const router = createBrowserRouter([
     element: <MainGrid />,
   },
   {
-    path: "/analytics",
-    element: <></>,
+    path: "/party-analytics",
+    element: <AnalyticsGrid />,
   },
 ]);
 
