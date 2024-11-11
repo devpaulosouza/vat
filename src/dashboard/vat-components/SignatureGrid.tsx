@@ -103,7 +103,7 @@ export default function SignatureGrid({ data }: Props) {
 const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado'];
   // Otherwise filter will be applied on fields such as the hidden column id
   const columns = React.useMemo(
-    () => data.cols.filter((column) => VISIBLE_FIELDS.includes(column.label)),
+    () => transformCols(data.cols.filter((column) => VISIBLE_FIELDS.includes(column.label))),
     [data.cols],
   );
 
@@ -112,7 +112,7 @@ const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado'];
     <StyledDataGrid
       autoHeight
       rows={transformRows(data.rows)}
-      columns={transformCols(data.cols)}
+      columns={columns}
       slots={{ toolbar: GridToolbar }}
       getRowClassName={(params) => {
         const signed = + params.row.signed ? 'super-app-theme--Filled' : 'super-app-theme--Rejected'
