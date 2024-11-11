@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { DataGrid, GridColDef, GridSingleSelectColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSingleSelectColDef, GridToolbar } from '@mui/x-data-grid';
 import { SheetGrid, SheetGridCol, SheetGridRow } from '../types';
 import { darken, lighten, styled, Theme } from '@mui/material';
+import { ptBR } from '@mui/x-data-grid/locales';
 
 type Props = {
   data: SheetGrid
@@ -89,9 +90,9 @@ export default function SignatureGrid({ data }: Props) {
       field: col.label,
       headerName: col.label,
       headerAlign: 'right',
-      align: 'right',
-      flex: 1,
-      minWidth: 80,
+      align: 'left',
+      flex: col.label === 'Nome' ? 5 : 1,
+      minWidth: col.label === 'Nome' ? 160 : 80,
     }
   }
 
@@ -99,11 +100,20 @@ export default function SignatureGrid({ data }: Props) {
     return cols.map(transformCol);
   }
 
+const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado'];
+  // Otherwise filter will be applied on fields such as the hidden column id
+  const columns = React.useMemo(
+    () => data.cols.filter((column) => VISIBLE_FIELDS.includes(column.label)),
+    [data.cols],
+  );
+
+
   return (
     <StyledDataGrid
       autoHeight
       rows={transformRows(data.rows)}
       columns={transformCols(data.cols)}
+      slots={{ toolbar: GridToolbar }}
       getRowClassName={(params) => {
         const signed = + params.row.signed ? 'super-app-theme--Filled' : 'super-app-theme--Rejected'
         return  signed;
@@ -113,9 +123,18 @@ export default function SignatureGrid({ data }: Props) {
         pagination: { paginationModel: { pageSize: 20 } },
       }}
       pageSizeOptions={[10, 20, 50]}
-      disableColumnResize
-      density="compact"
+      autosizeOnMount
+      autosizeOptions={{
+        includeOutliers: true,                 // Columns sized to fit all cell content
+        includeHeaders: true,                  // Columns sized to fit all header content
+      }}
+      disableDensitySelector
+      density='compact'
+      localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
       slotProps={{
+        toolbar: {
+          showQuickFilter: true,
+        },
         filterPanel: {
           filterFormProps: {
             logicOperatorInputProps: {
