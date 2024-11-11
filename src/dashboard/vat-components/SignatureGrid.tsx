@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { DataGrid, GridColDef, GridSingleSelectColDef, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowParams, GridSingleSelectColDef, GridToolbar } from '@mui/x-data-grid';
 import { SheetGrid, SheetGridCol, SheetGridRow } from '../types';
-import { darken, lighten, styled, Theme } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardMedia, darken, lighten, Modal as BaseModal, styled, Theme, Typography } from '@mui/material';
 import { ptBR } from '@mui/x-data-grid/locales';
 
 type Props = {
@@ -64,9 +64,28 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
       },
     },
   },
+  '& .MuiDataGrid-row:hover': {
+    'cursor': 'pointer',
+  }
 }));
 
+interface V {
+  v: string | boolean
+}
+
+const Modal = styled(BaseModal)`
+  position: fixed;
+  z-index: 1300;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export default function SignatureGrid({ data }: Props) {
+
+  const [selected, setSelected] = React.useState<V[]>([]);
+
   const transformRows = (rows: SheetGridRow[]) => {
     return rows.map(transformRow)
   }
@@ -100,66 +119,126 @@ export default function SignatureGrid({ data }: Props) {
     return cols.map(transformCol);
   }
 
-const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado'];
+  const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado'];
   // Otherwise filter will be applied on fields such as the hidden column id
   const columns = React.useMemo(
     () => transformCols(data.cols.filter((column) => VISIBLE_FIELDS.includes(column.label))),
     [data.cols],
   );
 
+  const handleRowClick = (params: GridRowParams) => {
+    const {
+      row: {
+        Nome,
+        Estado,
+        Partido,
+        Assinou,
+        c
+      }
+    } = params;
+
+    setSelected(c)
+
+    console.log(Nome, Estado, Partido, Assinou, c)
+  }
+
+  const handleClose = () => {
+    setSelected([]);
+  }
+
 
   return (
-    <StyledDataGrid
-      autoHeight
-      rows={transformRows(data.rows)}
-      columns={columns}
-      slots={{ toolbar: GridToolbar }}
-      getRowClassName={(params) => {
-        const signed = + params.row.signed ? 'super-app-theme--Filled' : 'super-app-theme--Rejected'
-        return  signed;
-      }
-      }
-      initialState={{
-        pagination: { paginationModel: { pageSize: 20 } },
-      }}
-      pageSizeOptions={[10, 20, 50]}
-      autosizeOnMount
-      autosizeOptions={{
-        includeOutliers: true,                 // Columns sized to fit all cell content
-        includeHeaders: true,                  // Columns sized to fit all header content
-      }}
-      disableDensitySelector
-      density='compact'
-      localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-      slotProps={{
-        toolbar: {
-          showQuickFilter: true,
-        },
-        filterPanel: {
-          filterFormProps: {
-            logicOperatorInputProps: {
-              variant: 'outlined',
-              size: 'small',
-            },
-            columnInputProps: {
-              variant: 'outlined',
-              size: 'small',
-              sx: { mt: 'auto' },
-            },
-            operatorInputProps: {
-              variant: 'outlined',
-              size: 'small',
-              sx: { mt: 'auto' },
-            },
-            valueInputProps: {
-              InputComponentProps: {
+    <>
+      <Modal
+        aria-labelledby="unstyled-modal-title"
+        aria-describedby="unstyled-modal-description"
+        open={!!selected.length}
+        onClose={handleClose}
+      // slots={{ backdrop: StyledBackdrop }}
+      >
+        <Card sx={{ maxWidth: 400 }}>
+          <CardMedia
+            component="img"
+            alt="green iguana"
+            height="240"
+            image={`${selected && selected[7]?.v || ''}`}
+            sx={{ padding: "1em 1em 0 1em", objectFit: "contain" }}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h3" component="div" sx={{ mt: 3 }}>
+              {selected[0]?.v}
+            </Typography>
+            <Typography gutterBottom variant="h6" component="div">
+              Partido: {selected[1]?.v}
+            </Typography>
+            <Typography gutterBottom variant="h6" component="div">
+              UF: {selected[2]?.v}
+            </Typography>
+            <Typography gutterBottom variant="h6" component="div" sx={{color: selected[3]?.v ? '#1fa324' : '#e8120c'}}>
+              Assinou: {selected[3]?.v ? 'Sim' : 'Não'}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              E-mail: {selected[3]?.v ? <a href={`mailto:${selected[6]?.v}`}>{selected[6]?.v}</a> : <a href={`mailto:${selected[6]?.v}?subject=Pelo Fim da Escala 6x1`}>{selected[6]?.v}</a>}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button size="small" onClick={handleClose} sx={{ mt: 3 }}>Fechar</Button>
+          </CardActions>
+        </Card>
+      </Modal>
+      <StyledDataGrid
+        autoHeight
+        rows={transformRows(data.rows)}
+        columns={columns}
+        onRowClick={handleRowClick}
+        slots={{ toolbar: GridToolbar }}
+        getRowClassName={(params) => {
+          const signed = + params.row.signed ? 'super-app-theme--Filled' : 'super-app-theme--Rejected'
+          return signed;
+        }
+        }
+        initialState={{
+          pagination: { paginationModel: { pageSize: 20 } },
+        }}
+        pageSizeOptions={[10, 20, 50]}
+        autosizeOnMount
+        autosizeOptions={{
+          includeOutliers: true,                 // Columns sized to fit all cell content
+          includeHeaders: true,                  // Columns sized to fit all header content
+        }}
+        disableDensitySelector
+        density='compact'
+        localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+        slotProps={{
+          toolbar: {
+            showQuickFilter: true,
+          },
+          filterPanel: {
+            filterFormProps: {
+              logicOperatorInputProps: {
                 variant: 'outlined',
                 size: 'small',
               },
+              columnInputProps: {
+                variant: 'outlined',
+                size: 'small',
+                sx: { mt: 'auto' },
+              },
+              operatorInputProps: {
+                variant: 'outlined',
+                size: 'small',
+                sx: { mt: 'auto' },
+              },
+              valueInputProps: {
+                InputComponentProps: {
+                  variant: 'outlined',
+                  size: 'small',
+                },
+              },
             },
           },
-        },
-      }}
-    />
+        }}
+      />
+    </>
   );
 }
