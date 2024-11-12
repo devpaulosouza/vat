@@ -189,7 +189,7 @@ export default function SignatureGrid({ data }: Props) {
                     X:
                   </div>
                   <div style={{ flex: 2 }}>
-                    <a href={`${selected[4].v}`} target='_blank'>@{`${selected[4].v}`.replaceAll('https://x.com/', '')}</a>
+                    <a href={`${selected[4].v}`} target='_blank'>@{`${selected[4].v}`.replaceAll('https://x.com/', '').replaceAll('https://www.x.com/', '')}</a>
                   </div>
                 </Typography>
               )
@@ -201,7 +201,7 @@ export default function SignatureGrid({ data }: Props) {
                     Instagram:
                   </div>
                   <div style={{ flex: 2 }}>
-                    <a href={`${selected[5]?.v}`} target='_blank'>@{`${selected[5]?.v}`.replaceAll('https://www.instagram.com/', '')}</a>
+                    <a href={`${selected[5]?.v}`} target='_blank'>@{`${selected[5]?.v}`.replaceAll('https://www.instagram.com/', '').replaceAll('https://instagram.com/', '')}</a>
                   </div>
                 </Typography>
               )
