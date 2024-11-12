@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, GridColDef, GridRowParams, GridSingleSelectColDef, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams, GridRowParams, GridSingleSelectColDef, GridToolbar } from '@mui/x-data-grid';
 import { SheetGrid, SheetGridCol, SheetGridRow } from '../types';
 import { Button, Card, CardActions, CardContent, CardMedia, darken, lighten, Modal as BaseModal, styled, Theme, Typography } from '@mui/material';
 import { ptBR } from '@mui/x-data-grid/locales';
@@ -90,7 +90,36 @@ export default function SignatureGrid({ data }: Props) {
     return rows.map(transformRow)
   }
 
-  // console.log(data.rows.map(r => r.c[0].v))
+  function renderSocialNewtworks(
+    params: GridRenderCellParams<SheetGridRow, any, any>,
+  ) {
+    if (params.value == null) {
+      return '';
+    }
+
+    return (
+      <>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'end' }}>
+          {
+            params.value.x && (
+              <div style={{ flex: 1 }}>
+                <img style={{ width: 45 }} src='https://cdn.icon-icons.com/icons2/4029/PNG/512/twitter_x_new_logo_square_x_icon_256075.png' />
+              </div>
+            )
+          }
+          {
+            params.value.instagram && (
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ flex: 1 }}>
+                  <img style={{ width: 25 }} src='https://cdn.iconscout.com/icon/free/png-256/free-instagram-1865876-2745483.png' />
+                </div>
+              </div>
+            )
+          }
+        </div>
+      </>
+    );
+  }
 
   const transformRow = (row: SheetGridRow) => {
     return {
@@ -100,7 +129,8 @@ export default function SignatureGrid({ data }: Props) {
       Partido: row.c[1].v,
       Estado: row.c[2].v,
       Assinou: row.c[3].v ? 'Sim' : 'Não',
-      signed: row.c[3].v
+      signed: row.c[3].v,
+      '@': { x: !!row.c[4]?.v, instagram: !!row.c[5]?.v }
     }
   }
 
@@ -116,10 +146,10 @@ export default function SignatureGrid({ data }: Props) {
   }
 
   const transformCols = (cols: SheetGridCol[]): GridColDef[] => {
-    return cols.map(transformCol);
+    return [...cols.map(transformCol), { field: '@', headerName: '@', renderCell: renderSocialNewtworks, align: 'right', headerAlign: 'right' }];
   }
 
-  const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado'];
+  const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado', 'Assinou', '@'];
   // Otherwise filter will be applied on fields such as the hidden column id
   const columns = React.useMemo(
     () => transformCols(data.cols.filter((column) => VISIBLE_FIELDS.includes(column.label))),
