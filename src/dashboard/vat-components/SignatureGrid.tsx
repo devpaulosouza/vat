@@ -128,7 +128,7 @@ export default function SignatureGrid({ data }: Props) {
       Nome: row.c[0].v,
       Partido: row.c[1].v,
       Estado: row.c[2].v,
-      Assinou: row.c[3].v ? 'Sim' : 'Não',
+      Assinou: row.c[3].v ? 'S' : 'N',
       signed: row.c[3].v,
       '@': { x: !!row.c[4]?.v, instagram: !!row.c[5]?.v }
     }
@@ -146,7 +146,7 @@ export default function SignatureGrid({ data }: Props) {
   }
 
   const transformCols = (cols: SheetGridCol[]): GridColDef[] => {
-    return [...cols.map(transformCol), { field: '@', headerName: '@', renderCell: renderSocialNewtworks, align: 'right', headerAlign: 'right' }];
+    return [{ field: '@', headerName: '@', renderCell: renderSocialNewtworks, align: 'right', headerAlign: 'right' }, ...cols.map(transformCol)];
   }
 
   const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado', 'Assinou', '@'];
