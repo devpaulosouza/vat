@@ -146,7 +146,7 @@ export default function SignatureGrid({ data }: Props) {
   }
 
   const transformCols = (cols: SheetGridCol[]): GridColDef[] => {
-    return [{ field: '@', headerName: '@', renderCell: renderSocialNewtworks, align: 'right', headerAlign: 'right' }, ...cols.map(transformCol)];
+    return [{ field: '@', headerName: '@', renderCell: renderSocialNewtworks, align: 'left', headerAlign: 'left', maxWidth: 80 }, ...cols.map(transformCol)];
   }
 
   const VISIBLE_FIELDS = ['Nome', 'Partido', 'Estado', 'Assinou', '@'];
