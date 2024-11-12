@@ -145,6 +145,7 @@ export default function SignatureGrid({ data }: Props) {
   const handleClose = () => {
     setSelected([]);
   }
+  console.log(selected[5]?.v, `${selected[5].v}`.replaceAll('https://x.com/', ''))
 
 
   return (
@@ -174,12 +175,40 @@ export default function SignatureGrid({ data }: Props) {
             <Typography gutterBottom variant="h6" component="div">
               UF: {selected[2]?.v}
             </Typography>
-            <Typography gutterBottom variant="h6" component="div" sx={{color: selected[3]?.v ? '#1fa324' : '#e8120c'}}>
+            <Typography gutterBottom variant="h6" component="div" sx={{ color: selected[3]?.v ? '#1fa324' : '#e8120c' }}>
               Assinou: {selected[3]?.v ? 'Sim' : 'Não'}
             </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              E-mail: {selected[3]?.v ? <a href={`mailto:${selected[6]?.v}`}>{selected[6]?.v}</a> : <a href={`mailto:${selected[6]?.v}?subject=Pelo Fim da Escala 6x1`}>{selected[6]?.v}</a>}
+            <Typography gutterBottom variant="body2" component="div" sx={{ display: 'flex', flexDirection: 'row' }}>
+              <div style={{ minWidth: 90 }}>
+                E-mail:
+              </div>
+              <div style={{ flex: 2 }}>{selected[3]?.v ? <a href={`mailto:${selected[6]?.v}`}>{selected[6]?.v}</a> : <a href={`mailto:${selected[6]?.v}?subject=Pelo Fim da Escala 6x1`}>{selected[6]?.v}</a>}
+              </div>
             </Typography>
+            {
+              selected[4]?.v && (
+                <Typography gutterBottom variant="body2" component="div" sx={{ display: 'flex', flexDirection: 'row' }}>
+                  <div style={{ minWidth: 90 }}>
+                    X:
+                  </div>
+                  <div style={{ flex: 2 }}>
+                    <a href={`${selected[4].v}`} target='_blank'>@{`${selected[4].v}`.replaceAll('https://x.com/', '')}</a>
+                  </div>
+                </Typography>
+              )
+            }
+            {
+              selected[5]?.v && (
+                <Typography gutterBottom variant="body2" component="div" sx={{ display: 'flex', flexDirection: 'row' }}>
+                  <div style={{ minWidth: 90 }}>
+                    Instagram:
+                  </div>
+                  <div style={{ flex: 2 }}>
+                    <a href={`${selected[5]?.v}`} target='_blank'>@{`${selected[5]?.v}`.replaceAll('https://www.instagram.com/', '')}</a>
+                  </div>
+                </Typography>
+              )
+            }
           </CardContent>
           <CardActions>
             <Button size="small" onClick={handleClose} sx={{ mt: 3 }}>Fechar</Button>
