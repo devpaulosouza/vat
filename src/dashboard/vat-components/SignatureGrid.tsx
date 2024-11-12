@@ -189,7 +189,7 @@ export default function SignatureGrid({ data }: Props) {
                     X:
                   </div>
                   <div style={{ flex: 2 }}>
-                    <a href={`${selected[4].v}`} target='_blank'>@{`${selected[4].v}`.replaceAll('https://x.com/', '').replaceAll('https://www.x.com/', '')}</a>
+                    <a href={`${selected[4].v}`} target='_blank'>@{`${selected[4].v}`.replaceAll('https://x.com/', '').replaceAll('https://www.x.com/', '').replaceAll('https://www.twitter.com/', '').replaceAll('https://twitter.com/', '')}</a>
                   </div>
                 </Typography>
               )
