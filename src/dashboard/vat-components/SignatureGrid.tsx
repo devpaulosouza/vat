@@ -200,7 +200,7 @@ export default function SignatureGrid({ data }: Props) {
         initialState={{
           pagination: { paginationModel: { pageSize: 20 } },
         }}
-        pageSizeOptions={[10, 20, 50, 1000]}
+        pageSizeOptions={[10, 20, 50, 100]}
         autosizeOnMount
         autosizeOptions={{
           includeOutliers: true,                 // Columns sized to fit all cell content
