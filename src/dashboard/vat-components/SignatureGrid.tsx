@@ -185,7 +185,7 @@ export default function SignatureGrid({ data }: Props) {
               <div style={{ flex: 2 }}>{selected[3]?.v ? <a href={`mailto:${selected[6]?.v}`}>{selected[6]?.v}</a> : <a href={`mailto:${selected[6]?.v}?subject=Pelo Fim da Escala 6x1`}>{selected[6]?.v}</a>}
               </div>
             </Typography>
-            {
+            {/* {
               selected[4]?.v && (
                 <Typography gutterBottom variant="body2" component="div" sx={{ display: 'flex', flexDirection: 'row' }}>
                   <div style={{ minWidth: 90 }}>
@@ -208,7 +208,7 @@ export default function SignatureGrid({ data }: Props) {
                   </div>
                 </Typography>
               )
-            }
+            } */}
           </CardContent>
           <CardActions>
             <Button size="small" onClick={handleClose} sx={{ mt: 3 }}>Fechar</Button>
