@@ -45,7 +45,7 @@ export default function MainGrid() {
 
   const id = '1wNNB1XO2W5TxJFw0Ki1XmrwOm6-aH98asge2w16GoaI';
   const gid = '0';
-  const url = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&tq&gid=${gid}`;
+  const url = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&tq&gid=${gid}}&range=A:I`;
 
   const [data, setData] = useState<SheetGrid>(EMPTY);
 
