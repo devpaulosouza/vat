@@ -112,17 +112,30 @@ export default function MainGrid() {
         </Grid>
       </Grid> */}
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <Typography component="p" sx={{ mb: 2, mr: 4 }}>
+              <Typography variant='h6' component="p" sx={{ mb: 2, mr: 4 }}>
                 Assinaturas: {data.rows.map(r => r.c[3].v).reduce((p, c) => (c ? 1 : 0) + p, 0)}
               </Typography>
-              <Typography component="p" sx={{ mb: 2, mr: 4 }}>
+              <Typography variant='h6' component="p" sx={{ mb: 2, mr: 4 }}>
                 Abstenções: {data.rows.map(r => r.c[3].v).reduce((p, c) => (c ? 0 : 1) + p, 0)}
               </Typography>
-              <Typography component="p" sx={{ mb: 2 }}>
+              <Typography variant='h6' component="p" sx={{ mb: 2, mr: 4 }}>
                 Total: {data.rows.length}
               </Typography>
+
             </div>
+
             <Grid container spacing={2} columns={12}>
+              <Grid size={{ xs: 12 }}>
+                <Typography variant="h6" gutterBottom sx={{ display: 'block' }}>
+                  Assine a petição publica pelo fim da escala 6x1 <a href="https://peticaopublica.com.br/pview.aspx?pi=BR135067" about='_blank'>Clicando aqui</a>
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <Typography variant="caption" gutterBottom sx={{ display: 'block' }}>
+                  Ultima atualização oficial: 13/11/2024 11:00 GMT-3 pela matéria do <a href="https://www.estadao.com.br/politica/pec-fim-escala-6x1-atinge-assinaturas-necessarias-para-ser-protocolada-erika-hilton-rick-azevedo-quem-assinou-nprp/" about='_blank'>Estadão</a>. 
+                  <br/>Assinaturas feitas depois desse horário são adicionadas quando postadas em uma rede social oficial dos deputados. A atualização pode demorar algum tempo.
+                </Typography>
+              </Grid>
               <Grid size={{ xs: 12, lg: 9 }}>
                 <SignatureGrid data={data} />
               </Grid>
