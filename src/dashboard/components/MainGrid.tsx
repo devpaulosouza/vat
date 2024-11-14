@@ -127,7 +127,7 @@ export default function MainGrid() {
             <Grid container spacing={2} columns={12}>
               <Grid size={{ xs: 12 }}>
                 <Typography variant="h6" gutterBottom sx={{ display: 'block' }}>
-                  Assine a petição publica pelo fim da escala 6x1 <a href="https://peticaopublica.com.br/pview.aspx?pi=BR135067" target='_blank'>Clicando aqui</a>
+                  Assine a petição pública pelo fim da escala 6x1 <a href="https://peticaopublica.com.br/pview.aspx?pi=BR135067" target='_blank'>Clicando aqui</a>
                 </Typography>
               </Grid>
               <Grid size={{ xs: 12 }}>
